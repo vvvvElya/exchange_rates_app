@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: exchange-rates-web
+    env: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn exchange_rates.wsgi
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: exchange-rates-db
+          property: connectionString
+      - key: REDIS_URL
+        value: redis://default:YOUR_REDIS_URL
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+
+  - type: worker
+    name: exchange-rates-celery
+    env: python
+    plan: free
+    startCommand: celery -A exchange_rates worker --loglevel=info
+
+  - type: worker
+    name: exchange-rates-beat
+    env: python
+    plan: free
+    startCommand: celery -A exchange_rates beat --loglevel=info
+
+databases:
+  - name: exchange-rates-db
+    plan: free
