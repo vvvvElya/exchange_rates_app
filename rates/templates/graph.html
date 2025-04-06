@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+
+    <h1 class="text-center text-primary">Graf výmenných kurzov</h1>
+    <form method="post" action="{% url 'backfill' %}">
+    {% csrf_token %}
+    <div class="text-center mt-4">
+    <button type="submit" class="btn btn-light">Aktualizovať chýbajúce dáta</button>
+    </div>
+    <p class="text-muted">
+    <strong>Poznámka:</strong> V dôsledku obmedzení môže byť automatizovaný zber dát dočasne prerušený.
+    Ak na stránke chýbajú aktuálne údaje, použite tlačidlo <strong>"Aktualizovať chýbajúce dáta"</strong> pre manuálnu aktualizáciu.
+</p>
+    </form>
+    
+    <form method="get" class="mt-4">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="start_date" class="form-label">Počiatočný dátum</label>
+                <input type="text" id="start_date" name="start_date" class="form-control" value="{{ start_date }}">
+            </div>
+            <div class="col-md-4">
+                <label for="end_date" class="form-label">Koncový dátum</label>
+                <input type="text" id="end_date" name="end_date" class="form-control" value="{{ end_date }}">
+            </div>
+            <div class="col-md-4">
+                <label for="currency" class="form-label">Mena</label>
+                <select id="currency" name="currency" class="form-select">
+                    <option value="USD" {% if currency == 'USD' %}selected{% endif %}>USD/EUR</option>
+                    <option value="CNY" {% if currency == 'CNY' %}selected{% endif %}>CNY/EUR</option>
+                    <option value="HUF" {% if currency == 'HUF' %}selected{% endif %}>HUF/EUR</option>
+                    <option value="PLN" {% if currency == 'PLN' %}selected{% endif %}>PLN/EUR</option>
+                    <option value="CZK" {% if currency == 'CZK' %}selected{% endif %}>CZK/EUR</option>
+                    <option value="GBP" {% if currency == 'GBP' %}selected{% endif %}>GBP/EUR</option>
+                </select>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Aktualizovať graf</button>
+        </div>
+    </form>
+    
+    <!-- Информация о выбранных параметрах -->
+    <div class="mt-4 text-center">
+        <h4 class="text-secondary">Vybrané obdobie: <strong>{{ start_date }} - {{ end_date }}</strong></h4>
+        <h5 class="text-muted">Mena: <strong>{{ currency }}</strong></h5>
+    </div>
+
+    <div id="graph" class="mt-5"></div>
+
+    <!-- Статистическая информация -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h5>Minimálny kurz</h5>
+                <p><strong>{{ min_value }}</strong></p>
+                <small>dňa {{ min_date }}</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h5>Maximálny kurz</h5>
+                <p><strong>{{ max_value }}</strong></p>
+                <small>dňa {{ max_date }}</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h5>Priemerný kurz</h5>
+                <p><strong>{{ avg_value }}</strong></p>
+            </div>
+        </div>
+    </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var startInput = document.getElementById("start_date");
+        var endInput = document.getElementById("end_date");
+
+        var startPicker = flatpickr(startInput, {
+            dateFormat: "Y-m-d",
+            defaultDate: startInput.value || "2024-01-01",
+            onChange: function (selectedDates) {
+                var minDate = selectedDates[0] ? selectedDates[0].toISOString().split("T")[0] : null;
+                endPicker.set("minDate", minDate);
+            }
+        });
+
+        var endPicker = flatpickr(endInput, {
+            dateFormat: "Y-m-d",
+            defaultDate: endInput.value || "2024-12-31",
+            minDate: startPicker.selectedDates[0] ? startPicker.selectedDates[0].toISOString().split("T")[0] : null
+        });
+    });
+
+    var dates = {{ dates|safe }};
+    var values = {{ values|safe }};
+    var currency = "{{ currency }}";
+
+    var trace = {
+        x: dates,
+        y: values,
+        type: 'scatter',
+        mode: 'lines',
+        name: currency
+    };
+
+    var layout = {
+        title: 'Výmenné kurzy v priebehu času',
+        xaxis: { title: 'Dátum' },
+        yaxis: { title: 'Kurz' }
+    };
+
+    Plotly.newPlot('graph', [trace], layout);
+</script>
+
+{% endblock %}

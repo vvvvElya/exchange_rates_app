@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Domov{% endblock %}
+{% load static %}
+
+
+{% block content %}
+
+
+    <!-- Hlavný názov práce -->
+    <h1 class="text-center text-primary mb-4">
+    Zber údajov a predikcia vybraných časových radov valutových kurzov
+    </h1>
+    
+    
+    <!-- Informácie o projekte a autoroch -->
+    <section class="p-4 bg-light rounded mb-5">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h3>O projekte</h3>
+                <p>
+                    Tento systém je súčasťou diplomovej práce, ktorej cieľom je vytvoriť informačný systém pre zber, analýzu a predikciu výmenných kurzov vybraných mien.
+                    Systém využíva dáta z API Európskej centrálnej banky a implementuje predikčné modely pre analýzu trendov výmenných kurzov.
+                </p>
+                <p><strong>Autor:</strong> Bc. Elmira Voloshchuk</p>
+                <p><strong>Vedúci záverečnej práce:</strong> doc. Ing. Jaroslav Kultan, PhD.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="{% static 'images/exchange-list.jpg' %}" alt="Kurzy" class="img-fluid rounded shadow-sm" style="max-height: 200px;">
+            </div>
+        </div>
+    </section>
+    
+    
+    <!-- Sekcia "Komponenty informačného systému" -->
+    <section class="mt-5">
+        <h3 class="text-center mb-4">Komponenty informačného systému</h3>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="card shadow-sm p-4 border-primary">
+                    <h5 class="text-primary">Zber dát</h5>
+                    <p>Automatizovaný systém zbiera výmenné kurzy z viacerých zdrojov.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm p-4 border-success">
+                    <h5 class="text-success">Analýza</h5>
+                    <p>Vizualizácia dát, identifikácia trendov a výkyvov na trhu.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm p-4 border-danger">
+                    <h5 class="text-danger">Predikcia</h5>
+                    <p>Predikčné modely pomáhajú odhadnúť budúce hodnoty výmenných kurzov.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tlačidlo na prechod do sekcie grafov -->
+    <div class="text-center mt-5">
+        <a href="{% url 'exchange_rate_graph' %}" class="btn btn-primary btn-lg shadow">Zobraziť grafy</a>
+
+    </div>
+</div>
+{% endblock %}

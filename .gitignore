@@ -1,0 +1,25 @@
+# Ignore Python env files
+.env
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+
+# Ignore virtualenv
+venv/
+env/
+
+# Ignore migrations
+**/migrations/
+
+# Ignore database if local
+*.sqlite3
+
+# Ignore IDE files
+.idea/
+.vscode/
+TIMEGPT_API_KEY=твой_реальный_API_ключ
+
+/staticfiles/
+/media/
+/rest_framework/static/rest_framework/

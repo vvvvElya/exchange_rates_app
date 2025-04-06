@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Výmenné kurzy{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .navbar {
+        background-color: white !important;
+        border-bottom: 2px solid transparent;
+    }
+    .navbar-brand, .nav-link {
+        color: #007bff !important;
+        font-weight: bold;
+    }
+    .section-title {
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #007bff;
+    }
+    .feature-card {
+        background: #e9ecef;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        transition: 0.3s;
+    }
+    .feature-card:hover {
+        background: #dee2e6;
+        transform: translateY(-5px);
+    }
+    .navbar-nav .nav-link {
+    font-size: 1.2rem; /* Увеличивает размер шрифта */
+    font-weight: bold; /* Дает более выразительный вид */
+    padding: 10px 15px; /* Добавляет немного отступов */
+}
+
+    .navbar-brand {
+    font-size: 1.5rem; /* Логотип (название) делает крупнее */
+    font-weight: bold;
+}
+  
+    .nav-link.active {
+    color: #007bff !important;  /* Оставляем синий цвет */
+    font-weight: bold;  /* Делаем жирным, но не превращаем в кнопку */
+    background: none !important; /* Убираем фон */
+    border-radius: 0;
+}
+
+    
+    /* Эффект наведения */
+    .nav-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+    
+    
+    /* Фиксированное меню при прокрутке */
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: white;
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+    <!-- Включаем навигационное меню -->
+    {% include 'header.html' %}
+    
+    <main class="container mt-4">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</main>
+
+    
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</body>
+</html>

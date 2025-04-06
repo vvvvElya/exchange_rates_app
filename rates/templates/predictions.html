@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Predikcia výmenného kurzu{% endblock %}
+
+{% block content %}
+<h1 class="section-title">Predikcia výmenného kurzu</h1>
+
+<form method="GET" action="{% url 'predikcia' %}" class="mb-4">
+    <div class="row g-3 align-items-center">
+        <div class="col-md-3">
+            <label for="currency" class="form-label">Vyberte menu:</label>
+            <select name="currency" id="currency" class="form-select">
+                <option value="" selected disabled>Vyberte menu</option>
+                <option value="USD" {% if currency == "USD" %}selected{% endif %}>USD</option>
+                <option value="CNY" {% if currency == "CNY" %}selected{% endif %}>CNY</option>
+                <option value="HUF" {% if currency == "HUF" %}selected{% endif %}>HUF</option>
+                <option value="PLN" {% if currency == "PLN" %}selected{% endif %}>PLN</option>
+                <option value="CZK" {% if currency == "CZK" %}selected{% endif %}>CZK</option>
+                <option value="GBP" {% if currency == "GBP" %}selected{% endif %}>GBP</option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label for="model" class="form-label">Model predikcie:</label>
+            <select name="model" id="model" class="form-select">
+                <option value="" selected disabled>Vyberte model</option>
+                <option value="lstm" {% if model == "lstm" %}selected{% endif %}>LSTM (neurónová sieť)</option>
+                <option value="linear_regression" {% if model == "linear_regression" %}selected{% endif %}>Lineárna regresia</option>
+                <option value="prophet" {% if model == "prophet" %}selected{% endif %}>Prophet</option>
+                <option value="timegpt" {% if model == "timegpt" %}selected{% endif %}>TimeGPT(Nixtla AI)</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="days" class="form-label">Počet dní predikcie:</label>
+            <input type="number" name="days" id="days" min="1" max="30" value="{{ days }}" class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <label class="form-label d-block invisible">.</label>
+            <button type="submit" class="btn btn-primary w-100">Zobraziť predikciu</button>
+        </div>
+    </div>
+</form>
+
+{% if error %}
+    <div class="alert alert-danger">❌ {{ error }}</div>
+{% endif %}
+
+    
+    {% if full_chart_data %}
+    <h2 class="mt-4">Vizualizácia predikcie</h2>
+    <div id="chart" style="height: 500px;"></div>
+    <button id="download-chart" class="btn btn-secondary mt-3">Stiahnuť graf ako obrázok</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            try {
+                const chartData = JSON.parse(`{{ full_chart_data|escapejs }}`);
+
+                const trace1 = {
+                    x: chartData.train_dates,
+                    y: chartData.train_values,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Tréningové dáta',
+                    line: { color: 'blue' },
+                    connectgaps: true
+                };
+
+                const trace2 = {
+                    x: chartData.test_dates,
+                    y: chartData.test_values,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Testovacie dáta',
+                    line: { color: 'green' },
+                    connectgaps: true
+                };
+
+                const trace3 = {
+                    x: chartData.test_dates.concat(chartData.future_dates),
+                    y: chartData.predicted_values.concat(chartData.future_values),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Predikcia',
+                    line: { color: 'red', dash: 'dot' },
+                    connectgaps: true
+                };
+
+                const data = [trace1, trace2, trace3];
+
+                if (chartData.future_lower && chartData.future_upper) {
+                    const trace4 = {
+                        x: chartData.future_dates,
+                        y: chartData.future_upper,
+                        mode: 'lines',
+                        line: { width: 0 },
+                        name: 'Horná hranica 95% intervalu',
+                        showlegend: false
+                    };
+
+                    const trace5 = {
+                        x: chartData.future_dates,
+                        y: chartData.future_lower,
+                        fill: 'tonexty',
+                        fillcolor: 'rgba(255, 0, 0, 0.2)',
+                        mode: 'lines',
+                        line: { width: 0 },
+                        name: 'Dolná hranica 95% intervalu',
+                        showlegend: true
+                    };
+
+                    data.push(trace4, trace5);
+                }
+
+                const layout = {
+                    title: 'Predikcia výmenného kurzu {{ currency }}',
+                    xaxis: { title: 'Dátum' },
+                    yaxis: { title: 'Kurz' },
+                    legend: {
+                        orientation: 'h',
+                        y: -0.3,
+                        x: 0.5,
+                        xanchor: 'center'
+                    },
+                    margin: { t: 50, b: 100 }
+                };
+
+                Plotly.newPlot('chart', data, layout).then(function () {
+                    Plotly.animate('chart', {
+                        data: data
+                    }, {
+                        transition: { duration: 1000, easing: 'cubic-in-out' },
+                        frame: { duration: 1000 }
+                    });
+                });
+
+                document.getElementById('download-chart').addEventListener('click', function () {
+                    Plotly.downloadImage('chart', {
+                        format: 'png',
+                        filename: 'predikcia_vymenneho_kurzu_{{ currency }}'
+                    });
+                });
+
+            } catch (e) {
+                document.getElementById('chart').innerHTML = '<div class="alert alert-danger">⚠️ Chyba pri vykreslení grafu</div>';
+                console.error(e);
+            }
+        });
+    </script>
+{% endif %}
+    
+{% if predictions %}
+    <h2 class="mt-4">Výsledky predikcie pre {{ currency }}</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Dátum</th>
+                <th>Predikovaný kurz</th>
+                <th>Model</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in predictions %}
+                <tr>
+                    <td>{{ p.date }}</td>
+                    <td>{{ p.predicted_value }}</td>
+                    <td>{{ p.model_name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% if metrics %}
+    <hr>
+    <h2>Vyhodnotenie modelu na testovacích dátach</h2>
+    <ul>
+        <li><strong>MSE:</strong> {{ metrics.MSE }}</li>
+        <li><strong>RMSE:</strong> {{ metrics.RMSE }}</li>
+        <li><strong>MAE:</strong> {{ metrics.MAE }}</li>
+        <li><strong>R²:</strong> {{ metrics.R2 }}</li>
+    </ul>
+{% endif %}
+
+
+
+{% endblock %}
