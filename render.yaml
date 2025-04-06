@@ -16,19 +16,6 @@ services:
         value: "False"
       - key: SECRET_KEY
         generateValue: true
-
-  - type: worker
-    name: exchange-rates-celery
-    env: python
-    plan: free
-    startCommand: celery -A exchange_rates worker --loglevel=info
-
-  - type: worker
-    name: exchange-rates-beat
-    env: python
-    plan: free
-    startCommand: celery -A exchange_rates beat --loglevel=info
-
 databases:
   - name: exchange-rates-db
     plan: free
