@@ -4,18 +4,17 @@ services:
     env: python
     plan: free
     buildCommand: ./build.sh
-    startCommand: gunicorn exchange_rates.wsgi
+    startCommand: gunicorn exchange_rates.wsgi --timeout 120
     envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: exchange-rates-db
           property: connectionString
-      - key: REDIS_URL
-        value: redis://default:YOUR_REDIS_URL
       - key: DEBUG
         value: "False"
       - key: SECRET_KEY
         generateValue: true
+
 databases:
   - name: exchange-rates-db
     plan: free

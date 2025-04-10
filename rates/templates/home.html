@@ -1,35 +1,91 @@
 {% extends "base.html" %}
 
 {% block title %}Domov{% endblock %}
-{% load static %}
 
 
 {% block content %}
     
-    <!-- Hlavný názov práce -->
-    <h1 class="text-center text-primary mb-4">
-    Zber údajov a predikcia vybraných časových radov valutových kurzov
-    </h1>
+        <!-- Приветственный блок с логотипами -->
+<section class="d-flex align-items-center justify-content-between p-4 mb-2 bg-white shadow-sm rounded logo-block">
+
+    <!-- Логотип факультета -->
+    <div class="d-none d-md-block">
+        <img src="https://sk.gaudeamus.cz/getFile/case:show/id:517261/FakultaHospodarskejInformatiky.jpg" 
+             alt="FHI Logo" 
+             style="max-height: 80px;" 
+             class="img-fluid">
+    </div>
+
+    <!-- Текст по центру -->
+    <div class="text-center flex-grow-1 logo-text">
+        <h5 class="mb-1">Ekonomická univerzita v Bratislave</h5>
+        <p class="mb-0">Fakulta hospodárskej informatiky</p>
+    </div>
+
+    <!-- Логотип университета -->
+    <div class="d-none d-md-block">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt5mkTQebTuau1yksQ0SKP-EU8p4H2wzK1uFVcEktvl-mJciwFxr503W17PWUFOGv3VOc&usqp=CAU" 
+             alt="EUBA Logo" 
+             style="max-height: 80px;" 
+             class="img-fluid">
+    </div>
+
+</section>
+
     
-    
-    <!-- Informácie o projekte a autoroch -->
-    <section class="p-4 bg-light rounded mb-5">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h3>O projekte</h3>
-                <p>
-                    Tento systém je súčasťou diplomovej práce, ktorej cieľom je vytvoriť informačný systém pre zber, analýzu a predikciu výmenných kurzov vybraných mien.
-                    Systém využíva dáta z API Európskej centrálnej banky a implementuje predikčné modely pre analýzu trendov výmenných kurzov.
-                </p>
-                <p><strong>Autor:</strong> Bc. Elmira Voloshchuk</p>
-                <p><strong>Vedúci záverečnej práce:</strong> doc. Ing. Jaroslav Kultan, PhD.</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <img src="{% static 'images/exchange-list.jpg' %}" alt="Kurzy" class="img-fluid rounded shadow-sm" style="max-height: 200px;">
-            </div>
+    <!-- Карусель с индикаторами -->
+<div id="bannerCarousel" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="4000">
+    <!-- Индикаторы -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+    </div>
+
+    <!-- Слайды -->
+    <div class="carousel-inner">
+        <div class="carousel-item">
+            <img src="https://cdn.vysokeskoly.cz/vysokeskolysk/get-image/8dbb33653c2d552bcaf2f632701d4a02912af0c4-1920-624-0-0-1920-624.jpg" class="d-block w-100" alt="экономический" style="max-height: 500px; object-fit: cover;">
         </div>
-    </section>
+        <div class="carousel-item active">
+            <img src="https://euba.sk/www_write/files/SK/aktivity-media/aktuality/2024/rekonstrukcie/v2.jpg" class="d-block w-100" alt="EUBA 1" style="max-height: 500px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="https://euba.sk/www_write/files/SK/aktivity-media/aktuality/2021/euba_slider_2021.jpeg" class="d-block w-100" alt="EUBA 2" style="max-height: 500px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="https://images.unsplash.com/photo-1620283110809-3ff3adfe057b?q=80&w=1932&auto=format&fit=crop" class="d-block w-100" alt="Banner 3" style="max-height: 500px; object-fit: cover;">
+        </div>
+    </div>
+
+    <!-- Навигация стрелками -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Predošlý</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Ďalší</span>
+    </button>
+    </div>
     
+    <!-- Hlavný názov práce -->
+<h1 class="text-center text-primary mb-3">
+    Zber údajov a predikcia vybraných časových radov valutových kurzov
+</h1>
+
+<!-- Informácie o projekte a autoroch -->
+<section class="p-3 bg-light rounded mb-3 text-center">
+    <h3 class="mb-3">O projekte</h3>
+    <p class="mb-2">
+        Tento systém je súčasťou diplomovej práce, ktorej cieľom je vytvoriť informačný systém pre zber, analýzu a predikciu výmenných kurzov vybraných mien.
+        Systém využíva dáta z API Európskej centrálnej banky a implementuje predikčné modely pre analýzu trendov výmenných kurzov.
+    </p>
+    <p class="mb-1"><strong>Autor:</strong> Bc. Elmira Voloshchuk</p>
+    <p class="mb-0"><strong>Vedúci záverečnej práce:</strong> doc. Ing. Jaroslav Kultan, PhD.</p>
+</section>
+
     
     <!-- Sekcia "Komponenty informačného systému" -->
     <section class="mt-5" data-aos="fade-up">
@@ -59,11 +115,46 @@
             </div>
         </div>
     </section>
-
-    <!-- Tlačidlo na prechod do sekcie grafov -->
-    <div class="text-center mt-5">
-        <a href="{% url 'exchange_rate_graph' %}" class="btn btn-primary btn-lg shadow">Zobraziť grafy</a>
-
+  
+    
+    
+    <section class="currency-section p-3 my-4 rounded shadow-sm">
+    <h5 class="text-center mb-4">Podporované meny</h5>
+    <div class="d-flex justify-content-center flex-wrap gap-3">
+        <div class="currency-icon d-flex align-items-center gap-2">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Flag_of_the_United_States_%28Pantone%29.svg/383px-Flag_of_the_United_States_%28Pantone%29.svg.png" alt="USD" width="24" height="16">
+            <span>USD</span>
+        </div>
+        <div class="currency-icon d-flex align-items-center gap-2">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/500px-Flag_of_the_People%27s_Republic_of_China.svg.png" alt="CNY" width="24" height="16">
+            <span>CNY</span>
+        </div>
+        <div class="currency-icon d-flex align-items-center gap-2">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Flag_of_Hungary.svg" alt="HUF" width="24" height="16">
+            <span>HUF</span>
+        </div>
+        <div class="currency-icon d-flex align-items-center gap-2">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Flag_of_Poland.svg" alt="PLN" width="24" height="16">
+            <span>PLN</span>
+        </div>
+        <div class="currency-icon d-flex align-items-center gap-2">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_Czech_Republic.svg" alt="CZK" width="24" height="16">
+            <span>CZK</span>
+        </div>
+        <div class="currency-icon d-flex align-items-center gap-2">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/1200px-Flag_of_the_United_Kingdom.svg.png?20190917170937" alt="GBP" width="24" height="16">
+            <span>GBP</span>
+        </div>
+        <div class="currency-icon d-flex align-items-center gap-2">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/Flag_of_Europe.svg" alt="EUR" width="24" height="16">
+            <span>EUR</span>
+        </div>
     </div>
+</section>
+
+
+
+    
+   
 </div>
 {% endblock %}

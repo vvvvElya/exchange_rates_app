@@ -22,22 +22,22 @@
 <style>
     
     body {
-        background-color: #cee0f3;  /* цвет заднего фона*/
+        background-color: #eaf6ff;  /* цвет заднего фона*/
         font-family: 'Inter', sans-serif;
     }
     .container {
         background: white;
-        padding: 50px;
+        padding: 20px;
         border-radius: 10px;  /* округление рамки контейнера с контентом */
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);  /* тень */
         max-width: 95%;
     }
     .navbar {
-        background-color: white !important;
+        background-color: white !important;  /* цвет шрифта меню кроме domov */
         border-bottom: 2px solid transparent;
     }
     .navbar-brand, .nav-link {
-        color: #007bff !important;
+        color: #007bff !important;  
         font-weight: bold;
     }
     .section-title {
@@ -89,6 +89,50 @@
         z-index: 1000;
         background-color: white;
     }
+
+    
+      
+        .logo-text h5 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #007afd;
+        letter-spacing: 0.5px;
+    }
+    
+   
+    .logo-text p {
+    font-size: 1.1rem;
+    font-weight: 700; /* жирный */
+    color:  #007bff; /*  Bootstrap purple */
+    margin-top: 0.3rem;
+}
+    .logo-block {
+        background-color: #abd5fd;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .carousel-item img {
+    height: 400px; /* фиксированная высота */
+    width: 100%; /* на всю ширину контейнера */
+    object-fit: cover; /* обрезать лишнее, чтобы все фото выглядели одинаково */
+}
+
+
+    .currency-icon {
+        padding: 24px 40px;
+        border-radius: 6px;
+        background: #ffffff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        font-size: 0.95rem;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+    
+    .currency-icon:hover {
+        background-color: #e9ecef;
+        transform: translateY(-2px);
+    }
+
 
 </style>
 
