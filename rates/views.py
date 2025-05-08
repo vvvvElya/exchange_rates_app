@@ -194,3 +194,6 @@ def backfill_view(request):
         backfill_missing_data(request)  # Вот так — передаём request!
         return redirect('exchange_rate_graph')
     return redirect('exchange_rate_graph')
+
+def contact_view(request):
+    return render(request, 'contact.html')
